@@ -22,7 +22,8 @@ Projekt testowy, uwzględniający kilka testowych przypadków oraz `SpeedTest`, 
 
 ## Opis
 Głównym wyzwaniem podczas wykonania tego zadania, było otrzymanie jak najlepszej złożoności czasowej, przy sensownej złożoności przestrzennej 
-To są najważniejsze zastosowane techniki
+
+Najważniejsze elementy rozwiązania:
 * `HashTables`: Używałem w programie tablic z haszowaniem, które pozwoliły na szybkie wyciąganie elementów, co znacznie skróciło całkowitą złożoność obliczeniową w krytycznych miejscach
 * `Struktura XML`: Dzięki strukturze pliku `xml`, mianowicie faktu, że dziecko zawsze idzie po rodzicu, udało się przyspieszyć niektóre części programu
 
