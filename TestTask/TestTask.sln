@@ -5,7 +5,7 @@ VisualStudioVersion = 17.4.33103.184
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestTask.Logic", "TestTask.Logic\TestTask.Logic.csproj", "{FBFF5245-77B1-4F95-9860-D167612C547B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestTasl.ConsoleApp", "TestTasl.ConsoleApp\TestTasl.ConsoleApp.csproj", "{00F7A6A6-B30E-46A1-88E3-71A10EE72D0F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestTask.ConsoleApp", "TestTasl.ConsoleApp\TestTask.ConsoleApp.csproj", "{00F7A6A6-B30E-46A1-88E3-71A10EE72D0F}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestTask.Tests", "TestTask.Tests\TestTask.Tests.csproj", "{7F006BE4-C52D-41BB-8F62-68CD1CA2A52A}"
 EndProject

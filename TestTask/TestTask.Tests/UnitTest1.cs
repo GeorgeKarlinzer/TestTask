@@ -226,11 +226,35 @@ namespace TestTask.Tests
         }
 
         [Test]
-        public void SpeedTest()
+        public void AverageCaseSpeedTest()
         {
             var commissionSystem = new CommissionSystem();
 
-            commissionSystem.CalculateStats(GetMemberDtos(1 * (int)10e4), GetTransferDtos(1 * (int)10e3));
+            commissionSystem.CalculateStats(GetMemberDtos(2, 1 * (int)10e6), GetTransferDtos(1 * (int)10e6));
+
+            static IEnumerable<MemberDto> GetMemberDtos(int childByParent, int count)
+            {
+                yield return new() { Id = 0, SupervisorId = null };
+
+                for (int i = 1; i <= count; i++)
+                    yield return new() { Id = i, SupervisorId = (i - 1) / childByParent };
+            }
+
+            static IEnumerable<TransferDto> GetTransferDtos(int count)
+            {
+                var rand = new Random();
+
+                for (var i = 0; i <= count; i++)
+                    yield return new() { From = rand.Next(0, i + 1), Amount = rand.Next(1000) };
+            }
+        }
+
+        [Test]
+        public void WorstCaseSpeedTest()
+        {
+            var commissionSystem = new CommissionSystem();
+
+            commissionSystem.CalculateStats(GetMemberDtos(1 * (int)10e3), GetTransferDtos(1 * (int)10e3));
 
 
             static IEnumerable<MemberDto> GetMemberDtos(int count)

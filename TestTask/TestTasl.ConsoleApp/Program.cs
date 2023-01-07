@@ -13,6 +13,12 @@ namespace TestTasl.ConsoleApp
             var membersSource = "./struktura.xml";
             var transfersSource = "./przelewy.xml";
 
+            /* Używam MemberDto oraz TransferDto, by uniezależnić program od typu danych wejściowych.
+             * Głównie używam tego do testów.
+             * 
+             * Jedynym warunkiem jest to, że dane wejściowe muszą zachowywać strukturę pliku xml:
+             *      ! Dziecięcy element zawsze idzie po rodzicu !
+             */
             var memberDtos = XDocument.Load(membersSource)
                 .Descendants("uczestnik")
                 .Select(x => new MemberDto()
@@ -20,7 +26,6 @@ namespace TestTasl.ConsoleApp
                     Id = (int)x.Attribute("id"),
                     SupervisorId = (int?)x.Parent.Attribute("id")
                 });
-
 
             var transferDtos = XDocument.Load(transfersSource)
                 .Descendants("przelew")
@@ -30,9 +35,9 @@ namespace TestTasl.ConsoleApp
                     Amount = (int)x.Attribute("kwota")
                 });
 
-            var calc = new CommissionSystem();
+            var cs = new CommissionSystem();
 
-            var results = calc.CalculateStats(memberDtos, transferDtos);
+            var results = cs.CalculateStats(memberDtos, transferDtos);
 
             foreach (var line in results)
                 Console.WriteLine(line);

@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Net.Http.Headers;
 
 namespace TestTask.Logic.Models
 {
@@ -9,20 +7,21 @@ namespace TestTask.Logic.Models
     {
         public int Id { get; }
         public Member Supervisor { get; set; }
-        public int Level { get; set; }
+        public int Level => Supervisor?.Level + 1 ?? 0;
         public int TotalCommission { get; private set; }
         public int SubordinatesNumber { get; set; }
 
         public Member(int id)
         {
             Id = id;
-            Level = 0;
             TotalCommission = 0;
         }
 
         public void ProcessTransfer(int amount)
         {
-            if(Supervisor is null)
+            /* Założyciel nie ma przełożonego i otrzymuje całą wpłaconą kwotę w postaci prowizji
+             */
+            if (Supervisor is null)
             {
                 TotalCommission += amount;
                 return;
@@ -31,13 +30,21 @@ namespace TestTask.Logic.Models
             var hierarchy = new Stack<Member>();
             var sup = Supervisor;
 
-            while(sup is not null)
+            /* Wkładamy kolejno wszystkich przełożonych do stosu
+             */
+            while (sup is not null)
             {
                 hierarchy.Push(sup);
                 sup = sup.Supervisor;
             }
 
-            while(hierarchy.Any())
+            /* Wyciągamy kolejno przełożonych ze stosu, zaczynając od założyciela.
+             * Jeżeli przełożony nie jest bezpośredni dla uczestnika, to do prowizji dodajemy połowę pozostałem kwoty.
+             * W przeciwnym przypadku, dodajemy całą pozostałą kwotę.
+             * 
+             * Złożoność obliczeniowa to O(k), gdzie k - ilość przełożonych uczestnika
+             */
+            while (hierarchy.Any())
             {
                 var mem = hierarchy.Pop();
                 var commission = mem == Supervisor ? amount : amount / 2;
