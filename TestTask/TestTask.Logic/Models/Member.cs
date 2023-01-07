@@ -8,8 +8,8 @@ namespace TestTask.Logic.Models
         public int Id { get; }
         public Member Supervisor { get; set; }
         public int Level => Supervisor?.Level + 1 ?? 0;
-        public int TotalCommission { get; private set; }
         public int SubordinatesNumber { get; set; }
+        public int TotalCommission { get; private set; }
 
         public Member(int id)
         {

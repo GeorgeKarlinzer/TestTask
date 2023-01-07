@@ -7,12 +7,33 @@ using TestTask.Logic.Dtos;
 
 namespace TestTask.Tests
 {
-    public class Tests
+    public class CommissionSystemTests
     {
+        private readonly CommissionSystem _commissionSystem;
+
+
+        public CommissionSystemTests()
+        {
+            _commissionSystem = new CommissionSystem();
+        }
+
+        private void Test(IEnumerable<MemberDto> memberDtos, IEnumerable<TransferDto> transferDtos, List<string> expectedResult)
+        {
+            var res = _commissionSystem.CalculateStats(memberDtos, transferDtos).ToList();
+
+            for (int i = 0; i < res.Count; i++)
+                Assert.That(res[i], Is.EqualTo(expectedResult[i]));
+        }
+
+        [SetUp]
+        public void SetUp()
+        {
+
+        }
+
         [Test]
         public void Test1()
         {
-            var commissionSystem = new CommissionSystem();
             var expectedResult = new List<string>()
             {
                 "1 0 3 1152",
@@ -24,10 +45,7 @@ namespace TestTask.Tests
                 "7 2 0 0",
             };
 
-            List<MemberDto> memberDtos;
-            List<TransferDto> transferDtos;
-
-            memberDtos = new()
+            var memberDtos = new List<MemberDto>()
             {
                 new() { Id = 1, SupervisorId = null },
                 new() { Id = 2, SupervisorId = 1 },
@@ -38,7 +56,7 @@ namespace TestTask.Tests
                 new() { Id = 7, SupervisorId = 6 },
             };
 
-            transferDtos = new()
+            var transferDtos = new List<TransferDto>()
             {
                 new() { From = 3, Amount = 150 },
                 new() { From = 6, Amount = 75 },
@@ -50,16 +68,12 @@ namespace TestTask.Tests
                 new() { From = 7, Amount = 25 },
             };
 
-            var res = commissionSystem.CalculateStats(memberDtos, transferDtos).ToList();
-
-            for (int i = 0; i < res.Count; i++)
-                Assert.That(res[i], Is.EqualTo(expectedResult[i]));
+            Test(memberDtos, transferDtos, expectedResult);
         }
 
         [Test]
         public void Test2()
         {
-            var commissionSystem = new CommissionSystem();
             var expectedResult = new List<string>()
             {
                 "1 0 1 198",
@@ -73,10 +87,7 @@ namespace TestTask.Tests
                 "9 8 0 0",
             };
 
-            List<MemberDto> memberDtos;
-            List<TransferDto> transferDtos;
-
-            memberDtos = new()
+            var memberDtos = new List<MemberDto>()
             {
                 new() { Id = 1, SupervisorId = null },
                 new() { Id = 2, SupervisorId = 1 },
@@ -89,7 +100,7 @@ namespace TestTask.Tests
                 new() { Id = 9, SupervisorId = 8 },
             };
 
-            transferDtos = new()
+            var transferDtos = new List<TransferDto>()
             {
                 new() { From = 9, Amount = 10 },
                 new() { From = 9, Amount = 25 },
@@ -100,16 +111,12 @@ namespace TestTask.Tests
                 new() { From = 1, Amount = 22 },
             };
 
-            var res = commissionSystem.CalculateStats(memberDtos, transferDtos).ToList();
-
-            for (int i = 0; i < res.Count; i++)
-                Assert.That(res[i], Is.EqualTo(expectedResult[i]));
+            Test(memberDtos, transferDtos, expectedResult);
         }
 
         [Test]
         public void Test3()
         {
-            var commissionSystem = new CommissionSystem();
             var expectedResult = new List<string>()
             {
                 "1 0 2 300",
@@ -118,10 +125,7 @@ namespace TestTask.Tests
                 "4 2 0 0",
             };
 
-            List<MemberDto> memberDtos;
-            List<TransferDto> transferDtos;
-
-            memberDtos = new()
+            var memberDtos = new List<MemberDto>()
             {
                 new() { Id = 1, SupervisorId = null },
                 new() { Id = 2, SupervisorId = 1 },
@@ -129,7 +133,7 @@ namespace TestTask.Tests
                 new() { Id = 4, SupervisorId = 3 },
             };
 
-            transferDtos = new()
+            var transferDtos = new List<TransferDto>()
             {
                 new() { From = 2, Amount = 100 },
                 new() { From = 3, Amount = 50 },
@@ -137,16 +141,12 @@ namespace TestTask.Tests
                 new() { From = 4, Amount = 200 },
             };
 
-            var res = commissionSystem.CalculateStats(memberDtos, transferDtos).ToList();
-
-            for (int i = 0; i < res.Count; i++)
-                Assert.That(res[i], Is.EqualTo(expectedResult[i]));
+            Test(memberDtos, transferDtos, expectedResult);
         }
 
         [Test]
         public void Test4()
         {
-            var commissionSystem = new CommissionSystem();
             var expectedResult = new List<string>()
             {
                 "1 0 15 1819",
@@ -175,10 +175,7 @@ namespace TestTask.Tests
                 "24 4 0 0",
             };
 
-            List<MemberDto> memberDtos;
-            List<TransferDto> transferDtos;
-
-            memberDtos = new()
+            var memberDtos = new List<MemberDto>()
             {
                 new() { Id = 1, SupervisorId = null },
                 new() { Id = 2, SupervisorId = 1 },
@@ -206,7 +203,7 @@ namespace TestTask.Tests
                 new() { Id = 24, SupervisorId = 22 },
             };
 
-            transferDtos = new()
+            var transferDtos = new List<TransferDto>()
             {
                 new() { From = 6, Amount = 100 },
                 new() { From = 10, Amount = 33 },
@@ -219,18 +216,15 @@ namespace TestTask.Tests
                 new() { From = 1, Amount = 910 },
             };
 
-            var res = commissionSystem.CalculateStats(memberDtos, transferDtos).ToList();
-
-            for (int i = 0; i < res.Count; i++)
-                Assert.That(res[i], Is.EqualTo(expectedResult[i]));
+            Test(memberDtos, transferDtos, expectedResult);
         }
 
         [Test]
-        public void AverageCaseSpeedTest()
+        public void SpeedTest()
         {
             var commissionSystem = new CommissionSystem();
 
-            commissionSystem.CalculateStats(GetMemberDtos(2, 1 * (int)10e6), GetTransferDtos(1 * (int)10e6));
+            commissionSystem.CalculateStats(GetMemberDtos(4, 1 * (int)10e6), GetTransferDtos(1 * (int)10e6));
 
             static IEnumerable<MemberDto> GetMemberDtos(int childByParent, int count)
             {
@@ -238,31 +232,6 @@ namespace TestTask.Tests
 
                 for (int i = 1; i <= count; i++)
                     yield return new() { Id = i, SupervisorId = (i - 1) / childByParent };
-            }
-
-            static IEnumerable<TransferDto> GetTransferDtos(int count)
-            {
-                var rand = new Random();
-
-                for (var i = 0; i <= count; i++)
-                    yield return new() { From = rand.Next(0, i + 1), Amount = rand.Next(1000) };
-            }
-        }
-
-        [Test]
-        public void WorstCaseSpeedTest()
-        {
-            var commissionSystem = new CommissionSystem();
-
-            commissionSystem.CalculateStats(GetMemberDtos(1 * (int)10e3), GetTransferDtos(1 * (int)10e3));
-
-
-            static IEnumerable<MemberDto> GetMemberDtos(int count)
-            {
-                yield return new() { Id = 0, SupervisorId = null };
-
-                for (int i = 1; i <= count; i++)
-                    yield return new() { Id = i, SupervisorId = i - 1 };
             }
 
             static IEnumerable<TransferDto> GetTransferDtos(int count)

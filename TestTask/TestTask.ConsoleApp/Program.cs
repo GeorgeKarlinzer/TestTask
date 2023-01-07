@@ -4,7 +4,7 @@ using System.Xml.Linq;
 using TestTask.Logic;
 using TestTask.Logic.Dtos;
 
-namespace TestTasl.ConsoleApp
+namespace TestTask.ConsoleApp
 {
     internal class Program
     {
